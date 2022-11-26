@@ -58,8 +58,6 @@ public class PlayerSelector extends Application {
             public void handle(ActionEvent event) {
                 Stage stage = (Stage)anchorPane.getScene().getWindow();
                 stage.close();
-                Board b = new Board();
-                b.start(new Stage());
             }
         });
         Scene scene = new Scene(anchorPane);
