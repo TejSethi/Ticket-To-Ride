@@ -27,6 +27,8 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 Main.mainStage = (Stage)anchorPane.getScene().getWindow();
                 Main.mainStage.hide();
+                PlayerSelector playerSelector = new PlayerSelector();
+                playerSelector.start(new Stage());
             }
         });
         Button quit = this.makeButton(250, 250, 100, 25, "Quit Game", anchorPane);
