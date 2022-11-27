@@ -18,7 +18,7 @@ public class Main extends Application {
     public Main() {
     }
 
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         final AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefWidth(600.0);
         anchorPane.setPrefHeight(400.0);
