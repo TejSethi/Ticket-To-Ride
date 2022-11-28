@@ -2,15 +2,15 @@
  * A Train car card.
  */
 public class TCard extends Card{
-    private Color color;
+    private COLOR color;
 
     public void TCard(String color) {
-        this.color = Color.color;
+        this.color = COLOR.color;
     }
-    public void TCard(Color color) {
-        this.color = Color;
+    public void TCard(COLOR color) {
+        this.color = COLOR;
     }
-    public Color getColor() {
+    public COLOR getColor() {
         return this.color;
     }
     public String getImage() {

@@ -7,3 +7,6 @@
 public enum COLOR {
     RED, YELLOW, BLUE, PURPLE, WHITE, RAINBOW
 }
+public enum TRAIN_COLOR {
+    READ, YELLOW, BLUE, PURPLE, WHITE, RAINBOW
+}

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * A location node on the map. Has paths leading away from it. (The paths update the Location's path list.
  */
@@ -9,10 +11,20 @@ public class Location {
     public ArrayList<Trainpath> getPaths() {
         return this.paths;
     }
-    public getName() {
+    public String getName() {
         return this.name;
     }
-    protected updatePaths(Trainpath newPath) {
+    public void updatePaths(Trainpath newPath) {
         this.paths.add(newPath);
+    }
+
+    public Trainpath findCommonPath(Location secondLocation) {
+        for (Trainpath path : this.paths) {
+            for (Trainpath secondpath: secondLocation.paths) {
+                if (path.equals(secondpath)) {
+                    return path;
+                }
+            }
+        }
     }
 }
