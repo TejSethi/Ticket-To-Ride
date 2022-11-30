@@ -2,6 +2,7 @@
  * The deck plus the 5 spread out cards next to it
  */
 
+/**
 public class TDeck {
 
     private COLOR[] colors;
@@ -18,4 +19,4 @@ public class TDeck {
             }
         }
     }
-}
+}*/

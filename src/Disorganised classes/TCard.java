@@ -1,6 +1,8 @@
 /**
  * A Train car card.
  */
+
+/**
 public class TCard extends Card{
     private Color color;
 
@@ -16,4 +18,4 @@ public class TCard extends Card{
     public String getImage() {
         return //TODO get an image from another file using a hashmap of color -> card.
     }
-}
+}*/

@@ -2,6 +2,7 @@
  * A route card.
  */
 
+/**
 public class RCard extends Card {
     private Color color;
     private Location loc1; //TODO make a node class? Or something like that.
@@ -22,4 +23,4 @@ public class RCard extends Card {
         locations[1] = this.loc2;
         return locations;
     }
-}
+}*/
