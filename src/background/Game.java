@@ -6,7 +6,7 @@ package background;
 
 public class Game {
     public Settings set;
-    public void Game() {
+    public Game() {
         this.set = new Settings();
     }
 }
