@@ -18,7 +18,7 @@ public class Settings {
     public static int numCardsEachColor;
     public static int numCardsRainbow;
     public static HashMap<String, int[]> locations;
-    public static ArrayList<String[]> trainpaths;
+    public static ArrayList<String[]> trainPaths;
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class Settings {
             locations.put(spl[i], locationArr.get(i));
         }
         // Set trainPaths
-        trainpaths = getTrainPaths();
+        trainPaths = getTrainPaths();
     }
 
     private ArrayList<int[]> getCoords() {
@@ -96,7 +96,7 @@ public class Settings {
         Matcher matcher;
         String[] spl = {};
         try {
-            File file = new File("src/background/Trainpaths.csv");
+            File file = new File("src/background/TrainPaths.csv");
             Scanner sc = new Scanner(file);
             String line = sc.nextLine();
             spl = line.strip().split(",");

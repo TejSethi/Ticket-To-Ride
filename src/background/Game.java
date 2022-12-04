@@ -1,7 +1,7 @@
 package background;
 
 import boardobjects.Location;
-import boardobjects.Trainpath;
+import boardobjects.TrainPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Game {
     public Settings set;
     private HashMap<String, Location> locationMap;
-    private ArrayList<Trainpath> allPaths;
+    private ArrayList<TrainPath> allPaths;
     public Game() {
         this.set = new Settings();
         setupBoard();
@@ -35,6 +35,6 @@ public class Game {
             this.locationMap.put(name, locations.get(i));
         }
         // Generate Paths
-        //this.allPaths = TrainpathFactory.generate();  //TODO TrainpathFactory is still in progress. When done uncomment
+        this.allPaths = TrainPathFactory.generate(this);
     }
 }

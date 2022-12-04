@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Location {
     private String name;
-    private ArrayList<Trainpath> paths;
+    private ArrayList<TrainPath> paths;
     private float x;
     private float y;
 
@@ -17,13 +17,13 @@ public class Location {
         this.y = y;
         this.name = name;
     }
-    public ArrayList<Trainpath> getPaths() {
+    public ArrayList<TrainPath> getPaths() {
         return this.paths;
     }
     public String getName() {
         return this.name;
     }
-    protected void updatePaths(Trainpath newPath) {
+    protected void updatePaths(TrainPath newPath) {
         this.paths.add(newPath);
     }
     public float[] getCoords() {

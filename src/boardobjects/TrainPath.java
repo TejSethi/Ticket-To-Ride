@@ -6,13 +6,13 @@ import background.Player;
  * path pieces are clicked, pieces are placed there.
  */
 
-public class Trainpath {
+public class TrainPath {
     private Location loc1;
     private Location loc2;
     public boolean filled;
     public Player filledBy;
 
-    public Trainpath(Location location1, Location location2) {
+    public TrainPath(Location location1, Location location2) {
         this.loc1 = location1;
         this.loc2 = location2;
         location1.updatePaths(this);
