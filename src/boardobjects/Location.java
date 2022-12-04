@@ -23,7 +23,7 @@ public class Location {
     public String getName() {
         return this.name;
     }
-    protected void updatePaths(TrainPath newPath) {
+    public void updatePaths(TrainPath newPath) {
         this.paths.add(newPath);
     }
     public float[] getCoords() {

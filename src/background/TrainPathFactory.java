@@ -13,6 +13,8 @@ public class TrainPathFactory {
         for (int i = 0; i < stringpath.size(); i++){
             ArrayList<Location> locations = game.getLocations(stringpath.get(i));
             TrainPath trainPath = new TrainPath(locations.get(0), locations.get(1));
+            locations.get(0).updatePaths(trainPath);
+            locations.get(1).updatePaths(trainPath);
             paths.add(trainPath);
         }
         return paths;
