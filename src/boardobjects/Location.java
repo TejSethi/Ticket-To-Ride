@@ -25,6 +25,17 @@ public class Location {
     protected void updatePaths(Trainpath newPath) {
         this.paths.add(newPath);
     }
+
+    public Trainpath findCommonPath(Location secondLocation) {
+        for (Trainpath path : this.paths) {
+            for (Trainpath secondpath: secondLocation.paths) {
+                if (path.equals(secondpath)) {
+                    return path;
+                }
+            }
+        }
+        return null;
+    }
     public float[] getCoords() {
         return new float[]{this.x, this.y};
     }
