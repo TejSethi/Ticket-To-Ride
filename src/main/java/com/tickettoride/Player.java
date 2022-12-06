@@ -27,18 +27,18 @@ the future
         destinationCards = new ArrayList<>();
         trainCards = new ArrayList<>();
         this.color = color;
-        trainCars = 45;
+        trainCars = 15;
         paths = new ArrayList<>();
 
     }
 
     public void addTrainCard(TrainCard card){
         trainCards.add(card);
-  }
+    }
 
     public  void addDestinationCard(DestinationCard card){
         destinationCards.add(card);
-  }
+    }
 
     public  DestinationCard removeDestinationCard(DestinationCard card){
         int index = destinationCards.indexOf(card);
@@ -59,15 +59,17 @@ the future
 
     public List<TrainCard> getTrainCards(){
         return trainCards;
-  }
+    }
 
-  public List<DestinationCard> getDestinationCards(){
+    public List<DestinationCard> getDestinationCards(){
         return destinationCards;
-  }
+    }
 
 
     public void placeTrains(Path path, Board board) {
-        // TODO: in 2.11
+        paths.add(path);
+        board.buildTrains(path, color);
+        trainCars -= path.getLength();
     }
 
     public int getNumber(){

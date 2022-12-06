@@ -4,8 +4,10 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,8 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +94,6 @@ public class Board extends Application {
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefWidth(width);
         anchorPane.setPrefHeight(height);
-        scale = new Scale();
 
         /*
         MenuBar menuBar = new MenuBar();
@@ -126,6 +129,7 @@ public class Board extends Application {
         AnchorPane.setTopAnchor(splitPane, 25.0);*/
 
         boardPane = new AnchorPane();
+        boardPane.setStyle("-fx-background-image: url('bus.gif');");
         playerPane = new AnchorPane();
 
         boardPane.setPrefWidth(width);
@@ -142,8 +146,20 @@ public class Board extends Application {
 
         game = new Game(this);
 
-        buildButton(1100, 20, 156, 242, "Train Deck");
+        Button b = buildButton(1100, 20, 156, 242, "Train Deck");
+        Image img = new Image(new File(IMAGES_PATH_LOCATION + "back.png").toURI().toString());
+        ImageView view = new ImageView(img);
+        view.setPreserveRatio(true);
+        b.setGraphic(view);
+        b.setContentDisplay(ContentDisplay.BOTTOM);
         destinationDeckButton = buildButton(1340, 20, 156, 242, "Destination Deck");
+        img = new Image(new File(IMAGES_PATH_LOCATION + "destination.png").toURI().toString());
+        view = new ImageView(img);
+        view.setPreserveRatio(true);
+        destinationDeckButton.setGraphic(view);
+        destinationDeckButton.setContentDisplay(ContentDisplay.BOTTOM);
+
+
         viewHandButton = buildButton(25, 100, 156, 50, "View Hand");
 
         viewHandButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -419,7 +435,7 @@ public class Board extends Application {
                                 cancelButton.setVisible(false);
                                 firstCardButton.setBorder(null);
                             } else if(firstCardIndex == 5 && index == 5 ||
-                            firstCardIndex != index && index < 6){
+                                    firstCardIndex != index && index < 6){
                                 secondCardButton = button;
                                 secondCardIndex = index;
                                 button.setBorder(new Border(new BorderStroke(buttonColor,
@@ -439,19 +455,25 @@ public class Board extends Application {
                             } else if (button == endTurnButton){
                                 if (firstCardIndex != 5){
                                     String name = game.getTableTrainCards()[firstCardIndex].getName();
-                                    Image img = new Image(name + ".png");
+                                    Image img = new Image(new File(IMAGES_PATH_LOCATION + name + ".png").toURI().toString());
                                     ImageView view = new ImageView(img);
                                     view.setPreserveRatio(true);
+                                    buttonIntMap.get(firstCardIndex).setText(getLabel(game.getTableTrainCards()[firstCardIndex].getColor()));
                                     buttonIntMap.get(firstCardIndex).setGraphic(view);
+                                    buttonIntMap.get(firstCardIndex).setContentDisplay(ContentDisplay.BOTTOM);
+
 
                                     //buttonIntMap.get(firstCardIndex).setText(game.getTableTrainCards()[firstCardIndex].getName());
                                 }
                                 if (secondCardIndex != 5){
                                     String name = game.getTableTrainCards()[secondCardIndex].getName();
-                                    Image img = new Image(name + ".png");
+                                    Image img = new Image(new File(IMAGES_PATH_LOCATION + name + ".png").toURI().toString());
                                     ImageView view = new ImageView(img);
                                     view.setPreserveRatio(true);
                                     buttonIntMap.get(secondCardIndex).setGraphic(view);
+                                    buttonIntMap.get(secondCardIndex).setContentDisplay(ContentDisplay.BOTTOM);
+                                    buttonIntMap.get(secondCardIndex).setText(getLabel(game.getTableTrainCards()[secondCardIndex].getColor()));
+
                                     // buttonIntMap.get(secondCardIndex).setText(game.getTableTrainCards()[secondCardIndex].getName());
                                 }
 
@@ -515,9 +537,17 @@ public class Board extends Application {
         Scene scene=new Scene(anchorPane);
         stage.setTitle("Ticket to Ride");
         stage.setScene(scene);
+
+
+        scale = new Scale();
         scene.getRoot().getTransforms().setAll(scale);
 
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
+        stage.setWidth(screenBounds.getWidth());
+        stage.setHeight(screenBounds.getHeight());
+        scale.setX(stage.getWidth()/width);
+        scale.setY(stage.getHeight()/height);
 
         stage.widthProperty().addListener((obs, oldVal, newVal) -> {
             // Do whatever you want
@@ -525,10 +555,10 @@ public class Board extends Application {
         });
 
         stage.heightProperty().addListener(
-            (obs, oldVal, newVal) -> {
-            // Do whatever you want
-            scale.setY(stage.getHeight()/height);
-        });
+                (obs, oldVal, newVal) -> {
+                    // Do whatever you want
+                    scale.setY(stage.getHeight()/height);
+                });
 
         stage.show();
         HashMap<Color, Integer> hashMap = new HashMap();
@@ -598,11 +628,12 @@ public class Board extends Application {
         }
         if(game.isGameOver()){
             state = state.GameOver;
+
         }
     }
 
     private void highlightPaths(){
-        for (main.java.com.tickettoride.Path path: paths){
+        for (Path path: paths){
             if(game.isValidPath(path)){
                 for(Rectangle road : path.getRoads()){
                     road.setOpacity(1);
@@ -645,12 +676,16 @@ public class Board extends Application {
     }
 
     public void buildTrains(Path p, Color color){
-        for(Rectangle road: p.getRoads()){
-            buildTrain((int)road.getLayoutX(),(int)road.getLayoutY(), (int)road.getRotate(),color, boardPane);
+        for(int i = 0; i < p.getLength(); i++){
+            buildTrain(0, 0, (int)p.getRoads().get(i).getRotate(),color,
+                    p.getHBoxList().get(i));
+            Label label = buildTrainLabel();
+            p.getHBoxList().get(i).getChildren().add(label);
         }
+
     }
 
-    private Rectangle buildTrain(int x, int y, int rotation, Color color, AnchorPane boardPane){
+    private Rectangle buildTrain(int x, int y, int rotation, Color color, HBox hBox){
         Rectangle train = new Rectangle();
         train.setArcHeight(180);
         train.setArcWidth(15);
@@ -662,7 +697,7 @@ public class Board extends Application {
         train.setRotate(rotation);
         train.setStroke(Color.SILVER);
         train.setStrokeType(StrokeType.INSIDE);
-        boardPane.getChildren().add(train);
+        hBox.getChildren().add(train);
         train.toFront();
 
         return train;
@@ -670,67 +705,50 @@ public class Board extends Application {
 
 
     private Path buildPath(int x, int y, int rotation, Color color, int length,
-                                              String start, String end, AnchorPane boardPane){
+                           String start, String end, AnchorPane boardPane){
 
         List<Rectangle> roads = new ArrayList<>();
+        List<HBox> hBoxes = new ArrayList<>();
         for(int i = 0; i < length; i++){
             HBox roadAnchor = buildRoad(x, y, rotation, color, boardPane);
+            hBoxes.add(roadAnchor);
             Rectangle road = (Rectangle) roadAnchor.getChildren().get(0);
-            List<Shape> shapes = buildLabel(x, y, rotation, color);
-            for (Shape shape: shapes){
-                roadAnchor.getChildren().add(shape);
-            }
+            Label label = buildLabel(color);
+            roadAnchor.getChildren().add(label);
+
             roads.add(road);
             x = (int)(x + Math.cos((90 - rotation) * Math.PI/180) * 92);
             y = (int)(y - Math.sin((90 - rotation) * Math.PI/180) *92);
 
-
-            // add event handler to road
-            road.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    // detect which path this road belongs to, and then from the path detect which two building are at each end
-                    System.out.println("Click on a road");
-
-                    // possibily have the Path object accessible here
-                }
-            });
-
         }
-        Path path = new Path(start, end, roads);
+        Path path = new Path(start, end, roads, hBoxes);
         paths.add(path);
         return path;
     }
 
-    private List<Shape> buildLabel(int x, int y, int rotation, Color color){
-        List<Shape> shapes = new ArrayList<>();
-        if (color == ROAD_COLORS[1]){
-            shapes.add(buildSquare(x, y, rotation, color));
+    private Label buildLabel(Color color){
+        for (int i = 0; i < ROAD_COLORS.length; i++){
+            if (color == ROAD_COLORS[i]){
+                Label label = new Label(Integer.toString(i + 1));
+                return label;
+            }
         }
-        else if (color == ROAD_COLORS[2]){
-            shapes.add(buildCircle(x, y, rotation, color));
+        return new Label("0");
+    }
+
+    public String getLabel(Color color){
+        for (int i = 0; i < ROAD_COLORS.length; i++){
+            if (color == ROAD_COLORS[i]){
+                return Integer.toString(i + 1);
+
+            }
         }
-        else if (color == ROAD_COLORS[3]){
-            shapes.add(buildTriangle(x, y, rotation, color));
-        }
-        else if (color == ROAD_COLORS[4]){
-            shapes.add(buildSquare(x, y, rotation, color));
-            shapes.add(buildTriangle(x, y, rotation, color));
-        }
-        else if (color == ROAD_COLORS[5]){
-            shapes.add(buildSquare(x, y, rotation, color));
-            shapes.add(buildCircle(x, y, rotation, color));
-        }
-        else if (color == ROAD_COLORS[6]){
-            shapes.add(buildCircle(x, y, rotation, color));
-            shapes.add(buildTriangle(x, y, rotation, color));
-        }
-        else if (color == ROAD_COLORS[7]){
-            shapes.add(buildSquare(x, y, rotation, color));
-            shapes.add(buildCircle(x, y, rotation, color));
-            shapes.add(buildTriangle(x, y, rotation, color));
-        }
-        return shapes;
+        return "0";
+    }
+
+    private Label buildTrainLabel(){
+        Label label = new Label("P" + Integer.toString(game.getPlayers().get(game.getTurn()).getNumber()));
+        return label;
     }
 
     private Shape buildSquare(int x, int y, int rotation, Color color){
@@ -796,7 +814,7 @@ public class Board extends Application {
     }
 
 
-    public void setState(State state) {
+    public void setState(Board.State state) {
         this.state = state;
     }
 

@@ -3,14 +3,18 @@ package main.java.com.tickettoride;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Pair;
@@ -26,13 +30,15 @@ public class CardViewer extends Application {
     private List<Pair<Button, DestinationCard>> destinationButtons;
     private Button confirm;
     private Button cancel;
-
+    private double width = 1920;
+    private double height = 1080;
+    private Scale scale;
     private DestinationCard destinationCardToRemove;
     @Override
     public void start(Stage stage) {
         anchorPane = new AnchorPane();
-        anchorPane.setPrefWidth(1920);
-        anchorPane.setPrefHeight(1060);
+        anchorPane.setPrefWidth(width);
+        anchorPane.setPrefHeight(height);
         destinationButtons = new ArrayList<>();
 
 
@@ -65,17 +71,21 @@ public class CardViewer extends Application {
 
             }
             button.setText(null);
-            String name =  Game.IMAGES_PATH_LOCATION +  trainCard.getName() + ".png";
+            String name = Game.IMAGES_PATH_LOCATION + trainCard.getName() + ".png";
             Image img = new Image(new File(name).toURI().toString());
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
             button.setGraphic(view);
+            button.setContentDisplay(ContentDisplay.BOTTOM);
+            button.setText(Board.board.getLabel(trainCard.getColor()));
+
+
 
         }
         count = 0;
         for(DestinationCard destinationCard: player.getDestinationCards()){
             Button button = buildButton(startX + rightShift * column + 40, startY + downShift*count,
-                    156, 242, destinationCard.getStart());
+                    156, 242, destinationCard.getStart() + " to " + destinationCard.getEnd());
             count += 1;
             button.toFront();
             Pair<Button, DestinationCard> pair = new Pair(button, destinationCard);
@@ -105,6 +115,13 @@ public class CardViewer extends Application {
                     }
                 }
             });
+
+            Image img = new Image(new File(Game.IMAGES_PATH_LOCATION + "destination.png").toURI().toString());
+            ImageView view = new ImageView(img);
+            view.setPreserveRatio(true);
+            button.setGraphic(view);
+            button.setContentDisplay(ContentDisplay.BOTTOM);
+
 
         }
 
@@ -153,6 +170,28 @@ public class CardViewer extends Application {
         anchorPane.getChildren().addAll(confirm, cancel);
 
         Scene scene=new Scene(anchorPane);
+
+        scale = new Scale();
+        scene.getRoot().getTransforms().setAll(scale);
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+        stage.setWidth(screenBounds.getWidth());
+        stage.setHeight(screenBounds.getHeight());
+        scale.setX(stage.getWidth()/width);
+        scale.setY(stage.getHeight()/height);
+
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            // Do whatever you want
+            scale.setX(stage.getWidth()/width);
+        });
+
+        stage.heightProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    // Do whatever you want
+                    scale.setY(stage.getHeight()/height);
+                });
+
         stage.setTitle("Ticket to Ride");
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
