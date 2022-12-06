@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -15,6 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class PlayerSelector extends Application {
@@ -24,14 +27,17 @@ public class PlayerSelector extends Application {
     private GridPane gridPane;
     private ComboBox comboBox;
     private ColorPicker[] colorPickers;
-    private double width;
-    private double height;
+    private Scale scale;
+    private double width = 600;
+    private double height = 400;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefWidth(600);
-        anchorPane.setPrefHeight(400);
+        anchorPane.setPrefWidth(width);
+        anchorPane.setPrefHeight(height);
 
         Label label = new Label("Number of Players: ");
         label.setLayoutX(180);
@@ -104,7 +110,32 @@ public class PlayerSelector extends Application {
 
 
 
+
+
         Scene scene=new Scene(anchorPane);
+
+        scale = new Scale();
+        scene.getRoot().getTransforms().setAll(scale);
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+        stage.setWidth(screenBounds.getWidth());
+        stage.setHeight(screenBounds.getHeight());
+        scale.setX(stage.getWidth()/width);
+        scale.setY(stage.getHeight()/height);
+
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            // Do whatever you want
+            scale.setX(stage.getWidth()/width);
+        });
+
+        stage.heightProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    // Do whatever you want
+                    scale.setY(stage.getHeight()/height);
+                });
+
+
         stage.setTitle("Ticket to Ride");
         stage.setScene(scene);
         stage.show();
@@ -120,8 +151,9 @@ public class PlayerSelector extends Application {
     myself.
      */
     private GridPane drawPlayerChoices(int numPlayers){
-        int width = 600/numPlayers;
-        int X = width/2;
+        double localWidth;
+        localWidth = width/(numPlayers + 1);
+        double X = localWidth/(numPlayers);
         GridPane gridPane = new GridPane();
         gridPane.setLayoutX(X);
         gridPane.setLayoutY(200);
@@ -132,7 +164,7 @@ public class PlayerSelector extends Application {
             colorPickers[i] = new ColorPicker();
             Label label = new Label("Player " + Integer.toString(i + 1));
             label.setAlignment(Pos.CENTER);
-            gridPane.getColumnConstraints().add(new ColumnConstraints(width));
+            gridPane.getColumnConstraints().add(new ColumnConstraints(localWidth));
             gridPane.add(label, i, 0);
 
             gridPane.add(colorPickers[i], i, 1);
