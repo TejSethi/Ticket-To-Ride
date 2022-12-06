@@ -30,7 +30,6 @@ import java.util.Map;
 import static main.java.com.tickettoride.Game.*;
 
 public class Board extends Application {
-    public static Board board;
     private Map<String, Button> buildings;
     private List<Path> paths;
     private Color[] colors;
@@ -75,8 +74,9 @@ public class Board extends Application {
         GameOver
     }
 
-    public Board(){
-        board = this;
+    public static Board instance;
+
+    private Board(){
         buildings = new HashMap<>();
         paths = new ArrayList<>();
         state = State.FirstRound;
@@ -84,7 +84,14 @@ public class Board extends Application {
         buttonIntMap = new HashMap<>();
         buttonCount = 0;
         removeDestinationFlag = false;
-        buttonColor =Color.LIGHTGOLDENRODYELLOW;
+        buttonColor = Color.LIGHTGOLDENRODYELLOW;
+    }
+
+    public static Board getInstance() {
+        if (instance == null) {
+            return new Board();
+        }
+        return instance;
     }
 
     @Override

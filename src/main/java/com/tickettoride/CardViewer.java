@@ -36,6 +36,9 @@ public class CardViewer extends Application {
     private DestinationCard destinationCardToRemove;
     @Override
     public void start(Stage stage) {
+
+        Board board = Board.getInstance();
+
         anchorPane = new AnchorPane();
         anchorPane.setPrefWidth(width);
         anchorPane.setPrefHeight(height);
@@ -51,7 +54,7 @@ public class CardViewer extends Application {
         int column = 0;
         int index = 0;
         int count = 0;
-        Player player = Board.board.getGame().getPlayers().get(Board.board.getGame().getTurn());
+        Player player = board.getGame().getPlayers().get(board.getGame().getTurn());
         for (TrainCard trainCard : player.getTrainCards()){
             Button button;
             if (positions.containsKey(trainCard.getColor())){
@@ -77,7 +80,7 @@ public class CardViewer extends Application {
             view.setPreserveRatio(true);
             button.setGraphic(view);
             button.setContentDisplay(ContentDisplay.BOTTOM);
-            button.setText(Board.board.getLabel(trainCard.getColor()));
+            button.setText(board.getLabel(trainCard.getColor()));
 
 
 
@@ -108,7 +111,7 @@ public class CardViewer extends Application {
             button.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if(Board.board.getRemoveDestinationFlag()){
+                    if(board.getRemoveDestinationFlag()){
                         confirm.setVisible(true);
                         cancel.setVisible(true);
                         destinationCardToRemove = destinationCard;
@@ -146,14 +149,14 @@ public class CardViewer extends Application {
         confirm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Board.board.getGame().playTurn(destinationCardToRemove, false, 0, 0, false, "", "");
-                if(Board.board.getGame().getRound() == 1){
-                    Board.board.setState(Board.State.Default);
-                    Board.board.getSkipButton().setVisible(false);
-                    Board.board.getRemoveDestinationButton().setVisible(false);
+                board.getGame().playTurn(destinationCardToRemove, false, 0, 0, false, "", "");
+                if(board.getGame().getRound() == 1){
+                    board.setState(Board.State.Default);
+                    board.getSkipButton().setVisible(false);
+                    board.getRemoveDestinationButton().setVisible(false);
                 }
-                Board.board.setCardStageNull();
-                Board.board.updateBoard();
+                board.setCardStageNull();
+                board.updateBoard();
                 stage.close();
             }
         });
@@ -196,7 +199,7 @@ public class CardViewer extends Application {
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {
-                Board.board.setCardStageNull();
+                board.setCardStageNull();
             }
         });
         stage.show();
