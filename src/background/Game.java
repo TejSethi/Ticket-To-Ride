@@ -30,11 +30,15 @@ public class Game {
         // Setup locationMap
         ArrayList<Location> locations = LocationFactory.generate(this);
         String name;
+        this.locationMap = new HashMap<>();
         for (int i = 0; i < locations.size(); i++) {
             name = locations.get(i).getName();
             this.locationMap.put(name, locations.get(i));
         }
         // Generate Paths
         this.allPaths = TrainPathFactory.generate(this);
+    }
+    public ArrayList<TrainPath> getPaths() {
+        return this.allPaths;
     }
 }
