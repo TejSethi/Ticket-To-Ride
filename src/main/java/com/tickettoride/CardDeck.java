@@ -16,6 +16,11 @@ public class CardDeck<T> implements Iterable<T> {
         discardCardList = new ArrayList<>();
         this.applyReshuffle = applyShuffling;
     }
+    public CardDeck(List<T> initialCards, boolean applyShuffling) {
+        this.cardList = initialCards;
+        discardCardList = new ArrayList<>();
+        this.applyReshuffle = applyShuffling;
+    }
 
     public void addCard(T card) {
         this.cardList.add(card);

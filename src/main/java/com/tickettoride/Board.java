@@ -620,10 +620,7 @@ public class Board extends Application {
         }
         playerColor.setFill(game.getPlayers().get(game.getTurn()).getColor());
         highlightPaths();
-        if(game.getTrainCardDeck().size() <= 2){
-            game.shuffleBackDiscard();
-        }
-        if(game.getDestinationCardDeck().size() == 0){
+        if(game.isDestinationCardDeckEmpty()){
             destinationDeckButton.setVisible(false);
         }
         if(game.isGameOver()){

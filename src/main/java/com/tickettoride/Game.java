@@ -11,10 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import main.java.com.tickettoride.Path;
-
 import static java.util.Collections.shuffle;
-
 
 
 public class Game {
@@ -99,10 +96,9 @@ public class Game {
 
     public static String IMAGES_PATH_LOCATION = "src/main/java/com/tickettoride/resources/";
 
-    private List<TrainCard> trainCardDeck;
-    private List<TrainCard> trainCardDiscard;
+    private CardDeck<TrainCard> trainCardsDeck;
+    private CardDeck<DestinationCard> destinationCardsDeck;
 
-    private List<DestinationCard> destinationCardDeck;
     private List<Player> players;
     private TrainCard[] tableTrainCards;
     private List<Path> paths;
@@ -116,9 +112,8 @@ public class Game {
         gameOverFlag = false;
         this.board = board;
         this.paths = board.getPaths();
-        trainCardDeck = makeTrainDeck();
-        trainCardDiscard = new ArrayList<>();
-        destinationCardDeck = makeDestinationDeck();
+        trainCardsDeck = makeTrainCardsDeck();
+        destinationCardsDeck = makeDestinationCardsDeck();
         players = makePlayers(board.getColors());
         tableTrainCards = new TrainCard[5];
         points = new int[players.size()];
@@ -136,36 +131,32 @@ public class Game {
         return players;
     }
 
-    private List<TrainCard> makeTrainDeck(){
-        List<TrainCard> trainCards = new ArrayList<>();
+    private CardDeck<TrainCard> makeTrainCardsDeck(){
+        CardDeck<TrainCard> trainCardsDeck = new CardDeck<>(true);
+
         for (int i = 0; i < ROAD_COLORS.length; i++){
             for(int j = 0; j < 12; j++){
-                trainCards.add(new TrainCard(ROAD_COLORS[i], TRAIN_NAMES[i]));
+                trainCardsDeck.addCard(new TrainCard(ROAD_COLORS[i], TRAIN_NAMES[i]));
             }
         }
-        shuffle(trainCards);
-        return trainCards;
+        shuffle(trainCardsDeck.getCardList());
+        return trainCardsDeck;
     }
 
+    private CardDeck<DestinationCard> makeDestinationCardsDeck(){
+        List<DestinationCard> initialDestinationCards = new ArrayList<>(Arrays.asList(DESTINATION_CARDS));
+        CardDeck<DestinationCard> destinationCardsDeck = new CardDeck<>(initialDestinationCards, false);
 
-    private List<DestinationCard> makeDestinationDeck(){
-
-
-
-        List<DestinationCard> destinationCards = new ArrayList<>(Arrays.asList(DESTINATION_CARDS));
-
-
-        shuffle(destinationCards);
-        return destinationCards;
+        shuffle(destinationCardsDeck.getCardList());
+        return destinationCardsDeck;
     }
 
     public TrainCard drawTrainCardFromDeck(){
-        return trainCardDeck.remove(trainCardDeck.size() - 1);
-
+        return trainCardsDeck.removeCard();
     }
 
     public DestinationCard drawDestinationCard(){
-        return destinationCardDeck.remove(destinationCardDeck.size() - 1);
+        return destinationCardsDeck.removeCard();
     }
 
     /*
@@ -236,7 +227,6 @@ public class Game {
     end of the game.
     */
         if (round == 0){
-            //
             if(destinationCard != null){
                 player.removeDestinationCard(destinationCard);
             }
@@ -264,7 +254,7 @@ public class Game {
                 player.placeTrains(path, board);
                 points[turn] += path.getPoints();
                 for(int i = 0; i < path.getLength(); i++){
-                    trainCardDiscard.add(player.removeTrainCard(path.getColor()));
+                    trainCardsDeck.addToDiscardedList(player.removeTrainCard(path.getColor()));
                 }
             }
             gameOverFlag = getGameOver();
@@ -372,18 +362,8 @@ public class Game {
         return gameOverFlag;
     }
 
-    public List<DestinationCard> getDestinationCardDeck(){
-        return destinationCardDeck;
-    }
-    public List<TrainCard> getTrainCardDeck(){
-        return trainCardDeck;
-    }
-
-
-    public void shuffleBackDiscard() {
-        trainCardDeck = trainCardDiscard;
-        trainCardDiscard = new ArrayList<>();
-        shuffle(trainCardDeck);
+    public boolean isDestinationCardDeckEmpty(){
+        return destinationCardsDeck.getCardList().isEmpty();
     }
 }
 
