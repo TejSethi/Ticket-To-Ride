@@ -200,7 +200,7 @@ public class Game {
             tableTrainCards[i] = drawTrainCardFromDeck();
             String name = tableTrainCards[i].getName();
             Button button = board.buildButton(startX, 20, 156, 242, name);
-            button.setText(Board.board.getLabel(tableTrainCards[i].getColor()));
+            button.setText(Board.getInstance().getLabel(tableTrainCards[i].getColor()));
             button.setContentDisplay(ContentDisplay.BOTTOM);
             name = IMAGES_PATH_LOCATION +  name + ".png";
             Image img = new Image(new File(name).toURI().toString());
