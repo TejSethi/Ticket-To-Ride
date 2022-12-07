@@ -75,7 +75,7 @@ public class Board extends Application {
         GameOver
     }
 
-    public Board(){
+    private Board(){
         board = this;
         buildings = new HashMap<>();
         paths = new ArrayList<>();
@@ -85,6 +85,10 @@ public class Board extends Application {
         buttonCount = 0;
         removeDestinationFlag = false;
         buttonColor =Color.LIGHTGOLDENRODYELLOW;
+    }
+
+    public static Board getBoard() {
+        return board;
     }
 
     @Override

@@ -92,7 +92,7 @@ public class PlayerSelector extends Application {
 
                 Stage stage = (Stage)anchorPane.getScene().getWindow();
                 stage.close();
-                Board b = new Board();
+                Board b = Board.getBoard();
                 Color[] colors = new Color[(Integer)comboBox.getValue()];
                 for(int i = 0; i < colors.length; i++){
                     colors[i] = colorPickers[i].getValue();
