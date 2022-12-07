@@ -453,6 +453,7 @@ public class Board extends Application {
                                 firstCardButton.setBorder(null);
                                 secondCardButton.setBorder(null);
                             } else if (button == endTurnButton){
+                                game.playTurn(null, true, firstCardIndex, secondCardIndex, false, "","");
                                 if (firstCardIndex != 5){
                                     String name = game.getTableTrainCards()[firstCardIndex].getName();
                                     Image img = new Image(new File(IMAGES_PATH_LOCATION + name + ".png").toURI().toString());
@@ -482,7 +483,6 @@ public class Board extends Application {
                                 endTurnButton.setVisible(false);
                                 firstCardButton.setBorder(null);
                                 secondCardButton.setBorder(null);
-                                game.playTurn(null, true, firstCardIndex, index, false, "","");
                             }
                             break;
                         case FirstBuildingSelected:
