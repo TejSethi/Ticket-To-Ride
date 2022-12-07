@@ -21,9 +21,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class PlayerSelector extends Application {
-
-
-
     private GridPane gridPane;
     private ComboBox comboBox;
     private ColorPicker[] colorPickers;
@@ -169,8 +166,6 @@ public class PlayerSelector extends Application {
 
             gridPane.add(colorPickers[i], i, 1);
         }
-
-
 
         return gridPane;
     }

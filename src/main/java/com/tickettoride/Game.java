@@ -99,8 +99,6 @@ public class Game {
 
     public static String IMAGES_PATH_LOCATION = "src/main/java/com/tickettoride/resources/";
 
-
-
     private List<TrainCard> trainCardDeck;
     private List<TrainCard> trainCardDiscard;
 
@@ -149,6 +147,7 @@ public class Game {
         return trainCards;
     }
 
+
     private List<DestinationCard> makeDestinationDeck(){
 
 
@@ -160,8 +159,9 @@ public class Game {
         return destinationCards;
     }
 
-    public TrainCard drawTrainCard(){
+    public TrainCard drawTrainCardFromDeck(){
         return trainCardDeck.remove(trainCardDeck.size() - 1);
+
     }
 
     public DestinationCard drawDestinationCard(){
@@ -192,9 +192,9 @@ public class Game {
         for (Player player: players){
             for(int i = 0; i < 3; i++){
                 player.addDestinationCard(drawDestinationCard());
-                player.addTrainCard(drawTrainCard());
+                player.addTrainCard(drawTrainCardFromDeck());
             }
-            player.addTrainCard(drawTrainCard());
+            player.addTrainCard(drawTrainCardFromDeck());
         }
         /*
         As a player in this
@@ -206,12 +206,12 @@ public class Game {
         turns.*/
         int startX = 200;
         for(int i = 0; i < 5; i++){
-            tableTrainCards[i] = drawTrainCard();
+            tableTrainCards[i] = drawTrainCardFromDeck();
             String name = tableTrainCards[i].getName();
             Button button = board.buildButton(startX, 20, 156, 242, name);
             button.setText(Board.board.getLabel(tableTrainCards[i].getColor()));
             button.setContentDisplay(ContentDisplay.BOTTOM);
-            name = IMAGES_PATH_LOCATION + name + ".png";
+            name = IMAGES_PATH_LOCATION +  name + ".png";
             Image img = new Image(new File(name).toURI().toString());
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
@@ -244,15 +244,15 @@ public class Game {
             if (drawTrain) {
                 if (train1 < 5){
                     player.addTrainCard(tableTrainCards[train1]);
-                    tableTrainCards[train1] = drawTrainCard();
+                    tableTrainCards[train1] = drawTrainCardFromDeck();
                 } else{
-                    player.addTrainCard(drawTrainCard());
+                    player.addTrainCard(drawTrainCardFromDeck());
                 }
                 if (train2 < 5){
                     player.addTrainCard(tableTrainCards[train2]);
-                    tableTrainCards[train2] = drawTrainCard();
+                    tableTrainCards[train2] = drawTrainCardFromDeck();
                 } else{
-                    player.addTrainCard(drawTrainCard());
+                    player.addTrainCard(drawTrainCardFromDeck());
                 }
             }
             else if (drawDestination) {
@@ -265,8 +265,6 @@ public class Game {
                 points[turn] += path.getPoints();
                 for(int i = 0; i < path.getLength(); i++){
                     trainCardDiscard.add(player.removeTrainCard(path.getColor()));
-
-
                 }
             }
             gameOverFlag = getGameOver();
@@ -388,3 +386,4 @@ public class Game {
         shuffle(trainCardDeck);
     }
 }
+

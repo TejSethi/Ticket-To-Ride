@@ -72,7 +72,7 @@ public class CardViewer extends Application {
             }
             button.setText(null);
             String name = Game.IMAGES_PATH_LOCATION + trainCard.getName() + ".png";
-            Image img = new Image(new File(name).toURI().toString());
+            Image img =  new Image(new File(name).toURI().toString());
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
             button.setGraphic(view);
@@ -115,7 +115,6 @@ public class CardViewer extends Application {
                     }
                 }
             });
-
             Image img = new Image(new File(Game.IMAGES_PATH_LOCATION + "destination.png").toURI().toString());
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
