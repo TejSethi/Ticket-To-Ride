@@ -1,6 +1,7 @@
 package main.java.com.tickettoride;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -13,6 +14,7 @@ import java.util.List;
 import main.java.com.tickettoride.Path;
 
 import static java.util.Collections.shuffle;
+
 
 
 public class Game {
@@ -87,7 +89,7 @@ public class Game {
     public static final String[] TRAIN_IMAGES = {
             "Purple.png",
             "Blue.png",
-            "Red.png",
+            "Temp.png",
             "Orange.png",
             "Black.png",
             "Green.png",
@@ -96,6 +98,7 @@ public class Game {
     };
 
     public static String IMAGES_PATH_LOCATION = "src/main/java/com/tickettoride/resources/";
+
 
 
     private List<TrainCard> trainCardDeck;
@@ -147,7 +150,12 @@ public class Game {
     }
 
     private List<DestinationCard> makeDestinationDeck(){
+
+
+
         List<DestinationCard> destinationCards = new ArrayList<>(Arrays.asList(DESTINATION_CARDS));
+
+
         shuffle(destinationCards);
         return destinationCards;
     }
@@ -201,7 +209,8 @@ public class Game {
             tableTrainCards[i] = drawTrainCard();
             String name = tableTrainCards[i].getName();
             Button button = board.buildButton(startX, 20, 156, 242, name);
-            button.setText(null);
+            button.setText(Board.board.getLabel(tableTrainCards[i].getColor()));
+            button.setContentDisplay(ContentDisplay.BOTTOM);
             name = IMAGES_PATH_LOCATION + name + ".png";
             Image img = new Image(new File(name).toURI().toString());
             ImageView view = new ImageView(img);
@@ -212,7 +221,7 @@ public class Game {
     }
 
     public void playTurn(DestinationCard destinationCard, boolean drawTrain,
-                            int train1, int train2,
+                         int train1, int train2,
                          boolean drawDestination, String start, String end){
         Player player = players.get(turn);
         /*
@@ -226,13 +235,13 @@ public class Game {
     to connected by the
     end of the game.
     */
-        if (round == 0){ // first round
+        if (round == 0){
             //
             if(destinationCard != null){
                 player.removeDestinationCard(destinationCard);
             }
-        } else{ // any proceeding round
-            if (drawTrain) { // player has taken the draw train option
+        } else{
+            if (drawTrain) {
                 if (train1 < 5){
                     player.addTrainCard(tableTrainCards[train1]);
                     tableTrainCards[train1] = drawTrainCard();
@@ -246,15 +255,27 @@ public class Game {
                     player.addTrainCard(drawTrainCard());
                 }
             }
-            else if (drawDestination) { // player has taken the draw destination option
+            else if (drawDestination) {
                 player.addDestinationCard(drawDestinationCard());
             }
-            else { // player has chosen a path to place trains on
-               // TODO: in 2.11
+            else{
+                Path path = findPath(start, end);
+                path.setTaken(true);
+                player.placeTrains(path, board);
+                points[turn] += path.getPoints();
+                for(int i = 0; i < path.getLength(); i++){
+                    trainCardDiscard.add(player.removeTrainCard(path.getColor()));
+
+
+                }
             }
             gameOverFlag = getGameOver();
-            if (gameOverFlag){
-                // TODO: in 4.16
+            if(gameOverFlag){
+                for (int i = 0; i < points.length; i++){
+                    points[i] += players.get(i).destinationPoints();
+                    players.get(i).setFinalScore(points[i]);
+
+                }
             }
         }
         turn = (turn + 1) % players.size();
