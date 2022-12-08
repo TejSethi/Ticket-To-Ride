@@ -23,11 +23,11 @@ public class Player {
     public List<Rcard> getRoutes() {return playerRoutes;}
 
     public void calculatescore(){
-        for (int i = 0; i <= playerroads.size(); i++){
+        for (int i = 0; i <= playerRoutes.size(); i++){
             if (playerroutes.get(i).isCompleted == true){
-                score += playerroutes.get(i).getscore();
+                score += playerRoutes.get(i).getscore();
             }else{
-                score -= playerroutes.get(i).getscore();
+                score -= playerRoutes.get(i).getscore();
             }
         }
     }
