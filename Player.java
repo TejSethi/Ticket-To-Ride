@@ -24,7 +24,7 @@ public class Player {
 
     public void calculatescore(){
         for (int i = 0; i <= playerRoutes.size(); i++){
-            if (playerroutes.get(i).isCompleted == true){
+            if (playerRoutes.get(i).isCompleted == true){
                 score += playerRoutes.get(i).getscore();
             }else{
                 score -= playerRoutes.get(i).getscore();
