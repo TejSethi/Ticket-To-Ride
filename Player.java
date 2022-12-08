@@ -3,10 +3,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Player {
-    public HashMap<COLOR, Integer> playerhand; //players train cards in inventory, key is colour and value is how many of that colour player has.
-    public ArrayList<Rcard> playerroutes; //players route cards in inventory
-    public Integer score; //player score
-    public Integer numTrains; //number of trains player has left
+    private Map<COLOR, Integer> playerHand; //players train cards in inventory, key is colour and value is how many of that colour player has.
+    private List<Rcard> playerRoutes; //players route cards in inventory
+    private Integer score; //player score
+    private Integer numTrains; //number of trains player has left
 
     public Player(){
         numTrains = 45;
