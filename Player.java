@@ -11,7 +11,7 @@ public class Player {
     public Player(){
         numTrains = 45;
         playerhand = new HashMap<COLOR, Integer>();
-        playerroutes = new ArrayList<Rcard>();
+        playerRoutes = new ArrayList<Rcard>();
         score = 0;
         for (int i = 0; i < COLOR.length; i++){
             playerhand.put(COLOR[i], 0);
@@ -39,7 +39,7 @@ public class Player {
         }
         int y = 0;
         while (y < 3){
-            playerroutes.add(Rcards.getTopCard());
+            playerRoutes.add(Rcards.getTopCard());
             //need to choose which cards player wants to remove...
         }
     }
