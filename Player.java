@@ -20,7 +20,7 @@ public class Player {
     }
     public Map<COLOR, Integer> getHand() {return playerHand;}
 
-    public ArrayList<Rcard> getRoutes() {return playerroutes;}
+    public List<Rcard> getRoutes() {return playerRoutes;}
 
     public void calculatescore(){
         for (int i = 0; i <= playerroads.size(); i++){
