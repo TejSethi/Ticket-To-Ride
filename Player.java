@@ -18,7 +18,7 @@ public class Player {
         }
 
     }
-    public HashMap<COLOR, Integer> getHand() {return playerhand;}
+    public Map<COLOR, Integer> getHand() {return playerHand;}
 
     public ArrayList<Rcard> getRoutes() {return playerroutes;}
 
