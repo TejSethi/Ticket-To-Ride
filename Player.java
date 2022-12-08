@@ -24,10 +24,10 @@ public class Player {
 
     public void calculatescore(){
         for (int i = 0; i <= playerroads.size(); i++){
-            if (playerroads.get(i).isCompleted == true){
-                score += playerroads.get(i).getscore();
+            if (playerroutes.get(i).isCompleted == true){
+                score += playerroutes.get(i).getscore();
             }else{
-                score -= playerroads.get(i).getscore();
+                score -= playerroutes.get(i).getscore();
             }
         }
     }
